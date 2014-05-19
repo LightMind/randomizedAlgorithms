@@ -10,66 +10,78 @@ import java.util.*;
 public class Project2 {
 
     public static final Random r = new SecureRandom();
-    public static final long prime = powerLong(2, 31) - 1;
+    public static final long PRIME = powerLong(2, 31) - 1;
+    private static PrintStream printStream;
 
     public static void main(String[] args) throws Exception {
-        File output = new File("output"+System.currentTimeMillis()+".txt");
-        PrintStream p = new PrintStream(output);
-        System.setOut(p);
+        File output = new File("output" + System.currentTimeMillis() + ".txt");
+        printStream = new PrintStream(output);
+        System.setOut(printStream);
 
-
-        //boolean[] results = runDeterministicBenchmark(2);
-        benchmarkRandomizedAlgorithm();
+        //benchmarkDeterministic(1);
+        benchmarkRandomizedAlgorithm(Arrays.asList(7));
     }
 
-    private static void benchmarkRandomizedAlgorithm() throws Exception {
-        System.out.println("Randomized Benchmark:");
+    private static void benchmarkRandomizedAlgorithm(List<Integer> dataSetsToRun) throws Exception {
 
-        long[] trueCounter = new long[7];
-        long[] falseCounter = new long[7];
-        long[] timeCounter = new long[7];
+        System.out.println("RANDOMIZED BENCHMARK:");
+        System.out.println("dataset, true, false, iterations, average running time");
 
-        while(true){
-            for(int i = 1; i <= 7; i++){
-                for(int repeat = 0; repeat < powerLong(2,8-i-1); repeat++){
-                    long time = System.currentTimeMillis();
-                    boolean result = randomizedMultisetEquality(i);
-                    long resultTime = System.currentTimeMillis()-time;
+        long[] trueCounters = new long[7];
+        long[] falseCounters = new long[7];
+        long[] timings = new long[7];
 
-                    if(result){
-                        trueCounter[i-1]++;
-                    }else{
-                        falseCounter[i-1]++;
+        while (true) {
+            for (int i = 1; i <= 7; i++) {
+                if (dataSetsToRun.contains(i)) {
+                    for (int iteration = 0; iteration < powerLong(2, 8 - i - 1); iteration++) {
+                        long timeBefore = System.currentTimeMillis();
+                        boolean result = randomizedMultisetEquality(i);
+                        timings[i - 1] += System.currentTimeMillis() - timeBefore;
+
+                        if (result) {
+                            trueCounters[i - 1]++;
+                        } else {
+                            falseCounters[i - 1]++;
+                        }
                     }
-                    timeCounter[i-1] += resultTime;
+
+                    System.out.println(i +
+                            ", " + trueCounters[i - 1] +
+                            ", " + falseCounters[i - 1] +
+                            ", " + (trueCounters[i - 1] + falseCounters[i - 1]) +
+                            ", " + timings[i - 1] / (trueCounters[i - 1] + falseCounters[i - 1]));
                 }
-                System.out.println(i + ", " + trueCounter[i-1] + ", " + falseCounter[i-1] + ", " + (trueCounter[i-1] + falseCounter[i-1]) + ", " + timeCounter[i-1]/(trueCounter[i-1] + falseCounter[i-1]));
             }
+
             System.out.println("");
         }
     }
 
+    private static void benchmarkDeterministic(int iterations) throws Exception {
+        System.out.println("DETERMINISTIC BENCHMARK:");
+        System.out.println("dataset, result, average running time");
 
-    private static boolean[] runDeterministicBenchmark(int repeats) throws Exception {
         long[] timings = new long[7];
         boolean[] results = new boolean[7];
-        for(int repeat = 0; repeat < repeats; repeat++){
-            for(int i = 1; i <= 7; i++){
-                long time = System.currentTimeMillis();
-                results[i-1] = deterministicMultisetEquality(i);
-                timings[i-1] += System.currentTimeMillis()-time;
+
+        for (int iteration = 1; iteration <= iterations; iteration++) {
+            for (int i = 1; i <= 7; i++) {
+                long timeBefore = System.currentTimeMillis();
+                results[i - 1] = deterministicMultisetEquality(i);
+                timings[i - 1] += System.currentTimeMillis() - timeBefore;
             }
         }
 
-        System.out.println("Deterministic benchmark");
-        for(int i = 0; i < 7; i++){
-            timings[i] /= repeats;
-            System.out.println("time for data set " + (i+1) + " is " + timings[i] + " ms");
+        for (int i = 1; i <= 7; i++) {
+            long timing = timings[i - 1] / iterations;
+            boolean result = results[i - 1];
+            System.out.println(i +
+                    ", " + result +
+                    ", " + timing);
         }
-        for(int i = 0; i < 7; i++){
-            System.out.println("result for data set " + (i+1) + " is " + results[i]);
-        }
-        return results;
+
+        System.out.println("");
     }
 
     public static Long powerLong(long base, long exponent) {
@@ -120,7 +132,7 @@ public class Project2 {
         return true;
     }
 
-    public static boolean randomizedMultisetEquality(int i) throws Exception{
+    public static boolean randomizedMultisetEquality(int i) throws Exception {
         return randomizedMultisetEqualitySingle(i) && randomizedMultisetEqualitySingle(i);
     }
 
@@ -132,7 +144,7 @@ public class Project2 {
         File fileB = new File(setB);
 
         List<Long> as = generateHashFunction(80); // length of lines is at most 80
-        long zValue = Math.abs(r.nextLong()) % prime;
+        long zValue = Math.abs(r.nextLong()) % PRIME;
 
         long poly1 = fingerprintFile(fileA, as, zValue);
         long poly2 = fingerprintFile(fileB, as, zValue);
@@ -159,25 +171,25 @@ public class Project2 {
 
             // we do not want negative values, javas % operator does not what we want with negative values.
             while (value < 0) {
-                value = prime + value;
+                value = PRIME + value;
             }
 
-            if(value >= prime){
-                value = value % prime;
+            if (value >= PRIME) {
+                value = value % PRIME;
             }
 
             result = result * value;
-            result = result % prime;
+            result = result % PRIME;
         }
         sc.close();
         return result;
     }
 
     public static List<Long> generateHashFunction(int size) {
-        List<Long> a = new ArrayList<>(size + 5);
+        List<Long> a = new ArrayList<Long>(size + 5);
 
         for (int i = 0; i < size; i++) {
-            a.add(Math.abs(r.nextLong()) % prime);
+            a.add(Math.abs(r.nextLong()) % PRIME);
         }
 
         return a;
@@ -187,12 +199,17 @@ public class Project2 {
         char[] chars = x.toCharArray();
         long result = 0;
 
+        if (x.length() > 80) {
+            System.out.println(x.length());
+        }
+
         for (int i = 0; i < x.length(); i++) {
-            result += (chars[i] * as.get(i));
-            result %= prime;
+            Long aLong = as.get(i);
+            char aChar = chars[i];
+            result += (aChar * aLong);
+            result %= PRIME;
         }
 
         return result;
     }
-
 }
