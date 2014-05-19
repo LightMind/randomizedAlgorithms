@@ -3,6 +3,7 @@ package lightmind.project2;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -12,10 +13,65 @@ public class Project2 {
     public static final long prime = powerLong(2, 31) - 1;
 
     public static void main(String[] args) throws Exception {
-        for (int i = 1; i <= 7; i++) {
-            System.out.println("Randomized    - set " + i + " Result: " + randomizedMultisetEquality(i));
-            System.out.println("Deterministic - set " + i + " Result: " + deterministicMultisetEquality(i));
+        File output = new File("output"+System.currentTimeMillis()+".txt");
+        PrintStream p = new PrintStream(output);
+        System.setOut(p);
+
+        //boolean[] results = runDeterministicBenchmark(2);
+        boolean[] results = {false,false,false,false,false,false,true};
+
+        long[] trueCounter = new long[7];
+        long[] falseCounter = new long[7];
+
+        long[] timeCounter = new long[7];
+
+
+        while(true){
+
+            for(int i = 1; i <= 7; i++){
+                for(int repeat = 0; repeat < 8-i; repeat++){
+                    long time = System.currentTimeMillis();
+                    boolean result = randomizedMultisetEquality(i);
+                    long resultTime = System.currentTimeMillis()-time;
+
+                    if(result){
+                        trueCounter[i-1]++;
+                    }else{
+                        falseCounter[i-1]++;
+                    }
+                    timeCounter[i-1] += resultTime;
+                }
+                System.out.println(i + ", " + trueCounter[i-1] + ", " + falseCounter[i-1] + ", " + (trueCounter[i-1] + falseCounter[i-1]) + ", " + timeCounter[i-1]/(trueCounter[i-1] + falseCounter[i-1]));
+            }
+            System.out.println("");
+
         }
+
+
+    }
+
+
+
+    private static boolean[] runDeterministicBenchmark(int repeats) throws Exception {
+        long[] timings = new long[7];
+        boolean[] results = new boolean[7];
+        for(int repeat = 0; repeat < repeats; repeat++){
+            for(int i = 1; i <= 7; i++){
+                long time = System.currentTimeMillis();
+                results[i-1] = deterministicMultisetEquality(i);
+                timings[i-1] += System.currentTimeMillis()-time;
+            }
+        }
+
+        System.out.println("Deterministic algorithm");
+        for(int i = 0; i < 7; i++){
+            timings[i] /= repeats;
+            System.out.println("time for data set " + (i+1) + " is " + timings[i] + " ms");
+        }
+        for(int i = 0; i < 7; i++){
+            System.out.println("result for data set " + (i+1) + " is " + results[i]);
+        }
+        return results;
     }
 
     public static Long powerLong(long base, long exponent) {
@@ -66,7 +122,11 @@ public class Project2 {
         return true;
     }
 
-    public static boolean randomizedMultisetEquality(int i) throws Exception {
+    public static boolean randomizedMultisetEquality(int i) throws Exception{
+        return randomizedMultisetEqualitySingle(i) && randomizedMultisetEqualitySingle(i);
+    }
+
+    public static boolean randomizedMultisetEqualitySingle(int i) throws Exception {
         String setA = "ralgodata/data" + i + "a.txt";
         String setB = "ralgodata/data" + i + "b.txt";
 
@@ -74,7 +134,7 @@ public class Project2 {
         File fileB = new File(setB);
 
         List<Long> as = generateHashFunction(80); // length of lines is at most 80
-        long zValue = r.nextLong() % prime;
+        long zValue = Math.abs(r.nextLong()) % prime;
 
         long poly1 = fingerprintFile(fileA, as, zValue);
         long poly2 = fingerprintFile(fileB, as, zValue);
@@ -103,6 +163,11 @@ public class Project2 {
             while (value < 0) {
                 value = prime + value;
             }
+
+            if(value >= prime){
+                value = value % prime;
+            }
+
             result = result * value;
             result = result % prime;
         }
