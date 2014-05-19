@@ -17,19 +17,21 @@ public class Project2 {
         PrintStream p = new PrintStream(output);
         System.setOut(p);
 
+
         //boolean[] results = runDeterministicBenchmark(2);
-        boolean[] results = {false,false,false,false,false,false,true};
+        benchmarkRandomizedAlgorithm();
+    }
+
+    private static void benchmarkRandomizedAlgorithm() throws Exception {
+        System.out.println("Randomized Benchmark:");
 
         long[] trueCounter = new long[7];
         long[] falseCounter = new long[7];
-
         long[] timeCounter = new long[7];
 
-
         while(true){
-
             for(int i = 1; i <= 7; i++){
-                for(int repeat = 0; repeat < 8-i; repeat++){
+                for(int repeat = 0; repeat < powerLong(2,8-i-1); repeat++){
                     long time = System.currentTimeMillis();
                     boolean result = randomizedMultisetEquality(i);
                     long resultTime = System.currentTimeMillis()-time;
@@ -44,12 +46,8 @@ public class Project2 {
                 System.out.println(i + ", " + trueCounter[i-1] + ", " + falseCounter[i-1] + ", " + (trueCounter[i-1] + falseCounter[i-1]) + ", " + timeCounter[i-1]/(trueCounter[i-1] + falseCounter[i-1]));
             }
             System.out.println("");
-
         }
-
-
     }
-
 
 
     private static boolean[] runDeterministicBenchmark(int repeats) throws Exception {
@@ -63,7 +61,7 @@ public class Project2 {
             }
         }
 
-        System.out.println("Deterministic algorithm");
+        System.out.println("Deterministic benchmark");
         for(int i = 0; i < 7; i++){
             timings[i] /= repeats;
             System.out.println("time for data set " + (i+1) + " is " + timings[i] + " ms");
@@ -75,8 +73,8 @@ public class Project2 {
     }
 
     public static Long powerLong(long base, long exponent) {
-        long result = base;
-        for (int i = 1; i < exponent; i++) {
+        long result = 1;
+        for (int i = 0; i < exponent; i++) {
             result = result * base;
         }
         return result;
