@@ -10,8 +10,8 @@ public class Project2 {
 
     public static final Random RANDOM = new SecureRandom();
 //    public static final long PRIME = powerLong(2, 31) - 1;    // 2.147.483.647
-    public static final long PRIME = powerLong(2, 24) - 167 ; // 16.777.049
-//    public static final long PRIME = powerLong(2, 20) - 185 ; // 1.048.391
+//    public static final long PRIME = powerLong(2, 24) - 167 ; // 16.777.049
+    public static final long PRIME = powerLong(2, 20) - 185 ; // 1.048.391
 //    public static final long PRIME = powerLong(2, 17) - 99;   // 130.973
 //    public static final long PRIME = powerLong(2, 14) - 111;  // 16.273
 //    public static final long PRIME = powerLong(2, 10) - 3;    // 1.021
@@ -36,7 +36,7 @@ public class Project2 {
         data.initDataRandom();
         System.out.println("done loading data");
 
-//        benchmarkDeterministic(data, 1);
+//       benchmarkDeterministic(data, 1);
         benchmarkRandomizedAlgorithm(data, 1000);
     }
 
@@ -219,7 +219,7 @@ public class Project2 {
             linesA = new ArrayList<String>();
             linesB = new ArrayList<String>();
             String characters = "ABCDEFGHIJKLMOPQRSTUVWZXabcdefghijklmnopqrstuvwzx ";
-            int length = RANDOM.nextInt(80 - 20) + 20;
+            int length = RANDOM.nextInt(39 - 30) + 30; // the length looks like the data from Gudmund
 
             for (int i = 0; i < size; i++) {
                 String firstString = generateString(characters, length);
