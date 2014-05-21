@@ -13,7 +13,7 @@ public class Project2 {
     public static final Random RANDOM = new SecureRandom();
     public static final long PRIME = powerLong(2, 20) - 185; // 1.048.391
     //public static final long PRIME = powerLong(2, 21) - 9; // 2.097.143
-    public static final int SKIP = 50;
+    public static final int SKIP = 100;
 
     /**
      * The largest set consumes just under 500 mb of memory so set compile flag -Xmx1024m
@@ -21,29 +21,28 @@ public class Project2 {
      */
     public static void main(String[] args) throws Exception {
 
+        int bitsInPrime = (int) (Math.log(PRIME) / Math.log(2)) + 1;
+        System.out.println("****** benchmarking with a " + bitsInPrime + " bit prime and skipping the first " + SKIP + " iterations when calculating the average running time ******");
+
         RandomizedBenchmarkStrategy singlePolynomialRandomizedBenchmarkStrategy = new SinglePolynomialRandomizedBenchmarkStrategy();
         RandomizedBenchmarkStrategy doublePolynomialRandomizedBenchmarkStrategy = new DoublePolynomialRandomizedBenchmarkStrategy();
 
         for (Data data : Data.values()) {
+            System.out.println("");
             System.out.println("****** " + (int) data.getSize() + " lines with " + (int) data.getIterations() + " iterations ******");
 
-            System.out.println("");
             System.out.println("randomized - all lines in the two sets are different");
             data.initDataAllDifferent();
             randomizedBenchmark(data, singlePolynomialRandomizedBenchmarkStrategy);
             randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
 
-            System.out.println("");
-            System.out.println("randomized - only one line in the two sets is different");
+            System.out.println("randomized - only one pair of lines in the two sets are different");
             data.initData1Different();
             randomizedBenchmark(data, singlePolynomialRandomizedBenchmarkStrategy);
             randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
 
-            System.out.println("");
-            System.out.println("deterministic - only one line in the two sets is different");
+            System.out.println("deterministic - only one pair of lines in the two sets are different");
             deterministicBenchmark(data);
-
-            System.out.println("");
         }
     }
 
@@ -64,9 +63,8 @@ public class Project2 {
             }
         }
 
-        int bitsInPrime = (int) (Math.log(PRIME) / Math.log(2)) + 1;
         String averageTime = FORMAT.format((totalTime / (data.getIterations() - SKIP)) * Math.pow(10.0, -6.0));
-        System.out.println(bitsInPrime + " bit prime, " + errorCounter + " errors, " + averageTime + " ms, " + randomizedBenchmarkStrategy.getPolynomialType());
+        System.out.println("    " + errorCounter + " errors, " + averageTime + " ms, " + randomizedBenchmarkStrategy.getPolynomialType());
     }
 
     private static void deterministicBenchmark(Data data) {
@@ -85,7 +83,7 @@ public class Project2 {
         }
 
         String averageTime = FORMAT.format((totalTime / (data.getIterations() - SKIP)) * Math.pow(10.0, -6.0));
-        System.out.println(averageTime + " ms");
+        System.out.println("    " + averageTime + " ms");
     }
 
     public static boolean deterministicMultisetEquality(List<String> linesA, List<String> linesB) {
@@ -140,10 +138,10 @@ public class Project2 {
     }
 
     public static enum Data {
-        SET1(false, Math.pow(10.0, 1.0), Math.pow(10.0, 8.0)),
-        SET2(false, Math.pow(10.0, 2.0), Math.pow(10.0, 7.0)),
-        SET3(false, Math.pow(10.0, 3.0), Math.pow(10.0, 6.0)),
-        SET4(false, Math.pow(10.0, 4.0), Math.pow(10.0, 5.0)),
+        SET1(false, Math.pow(10.0, 1.0), Math.pow(10.0, 6.0)),
+        SET2(false, Math.pow(10.0, 2.0), Math.pow(10.0, 5.0)),
+        SET3(false, Math.pow(10.0, 3.0), Math.pow(10.0, 5.0)),
+        SET4(false, Math.pow(10.0, 4.0), Math.pow(10.0, 4.0)),
         SET5(false, Math.pow(10.0, 5.0), Math.pow(10.0, 4.0)),
         SET6(false, Math.pow(10.0, 6.0), Math.pow(10.0, 3.0));
         private List<String> linesA;
