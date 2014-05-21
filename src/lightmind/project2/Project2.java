@@ -9,36 +9,37 @@ import java.util.*;
 public class Project2 {
 
     public static final Random RANDOM = new SecureRandom();
-//    public static final long PRIME = powerLong(2, 31) - 1;
-    public static final long PRIME = powerLong(2, 28) - 57;
-//    public static final long PRIME = powerLong(2, 20) - 3;
-//    public static final long PRIME = powerLong(2, 15) - 19;
+//    public static final long PRIME = powerLong(2, 31) - 1; // 2.147.483.647
+//    public static final long PRIME = powerLong(2, 28) - 57; // 268.435.399
+//    public static final long PRIME = powerLong(2, 24) - 3; // 16.777.213
+    public static final long PRIME = powerLong(2, 20) - 3; // 1.048.573
+//    public static final long PRIME = powerLong(2, 15) - 19; // 32.749
 
     /**
      * The total amount of data consumes just under 6 gb of memory so set compile flag -Xmx8192m
      */
     public static void main(String[] args) throws Exception {
 
-//        Data data = Data.SET1;
-//        Data data = Data.SET2;
-//        Data data = Data.SET3;
-//        Data data = Data.SET4;
-//        Data data = Data.SET5;
-//        Data data = Data.SET6;
-        Data data = Data.SET7;
+//        Data data = Data.SET1; // 10 lines
+//        Data data = Data.SET2; // 100 lines
+//        Data data = Data.SET3; // 1.000 lines
+//        Data data = Data.SET4; // 10.000 lines
+//        Data data = Data.SET5; // 100.000 lines
+        Data data = Data.SET6; // 1.000.000 lines
+//        Data data = Data.SET7; // 10.000.000 lines
 
         System.out.println("start loading data");
-        data.init();
+        data.initDataFile();
+//        data.initDataRandom();
         System.out.println("done loading data");
 
 //        benchmarkDeterministic(data);
-        benchmarkRandomizedAlgorithm(data);
+        benchmarkRandomizedAlgorithm(data, 1000);
 
         //TODO Run the randomized algorithm twice
-        //TODO Spurious true results occur when roots are found in both polynomials.
     }
 
-    private static void benchmarkRandomizedAlgorithm(Data data) throws Exception {
+    private static void benchmarkRandomizedAlgorithm(Data data, int maxIterations) throws Exception {
 
         int errorCounter = 0;
         int iterations = 0;
@@ -56,10 +57,16 @@ public class Project2 {
             iterations++;
 
             System.out.println("result: " + result + ", running time: " + totalTime + " ms, errors: " + errorCounter + ", iterations: " + iterations);
+
+            if (iterations == maxIterations) {
+                break;
+            }
         }
     }
 
-    private static void benchmarkDeterministic(Data data) {
+    private static void benchmarkDeterministic(Data data, int maxIterations) {
+
+        int iterations = 0;
 
         while (true) {
             long timeBefore = System.currentTimeMillis();
@@ -67,15 +74,21 @@ public class Project2 {
             long timeAfter = System.currentTimeMillis();
             long totalTime = timeAfter - timeBefore;
 
+            iterations++;
+
             System.out.println("result: " + result + ", running time: " + totalTime + " ms");
+
+            if (iterations == maxIterations) {
+                break;
+            }
         }
     }
 
-    public static List<String> loadFile(File f) {
+    public static List<String> loadFile(File f, double size) {
         try {
             FileInputStream fInput = new FileInputStream(f);
             InputStreamReader inReader = new InputStreamReader(fInput, "Cp1252");
-            List<String> elements = new ArrayList<String>(10000005);
+            List<String> elements = new ArrayList<String>((int) size);
             Scanner sc = new Scanner(inReader);
             String tempString;
             int tempLength;
@@ -175,36 +188,65 @@ public class Project2 {
     }
 
     private enum Data {
-        SET1("ralgodata/data1a.txt", "ralgodata/data1b.txt", false),
-        SET2("ralgodata/data2a.txt", "ralgodata/data2b.txt", false),
-        SET3("ralgodata/data3a.txt", "ralgodata/data3b.txt", false),
-        SET4("ralgodata/data4a.txt", "ralgodata/data4b.txt", false),
-        SET5("ralgodata/data5a.txt", "ralgodata/data5b.txt", false),
-        SET6("ralgodata/data6a.txt", "ralgodata/data6b.txt", false),
-        SET7("ralgodata/data7a.txt", "ralgodata/data7b.txt", true);
-
+        SET1("ralgodata/data1a.txt", "ralgodata/data1b.txt", false, Math.pow(10.0, 1.0)),
+        SET2("ralgodata/data2a.txt", "ralgodata/data2b.txt", false, Math.pow(10.0, 2.0)),
+        SET3("ralgodata/data3a.txt", "ralgodata/data3b.txt", false, Math.pow(10.0, 3.0)),
+        SET4("ralgodata/data4a.txt", "ralgodata/data4b.txt", false, Math.pow(10.0, 4.0)),
+        SET5("ralgodata/data5a.txt", "ralgodata/data5b.txt", false, Math.pow(10.0, 5.0)),
+        SET6("ralgodata/data6a.txt", "ralgodata/data6b.txt", false, Math.pow(10.0, 6.0)),
+        SET7("ralgodata/data7a.txt", "ralgodata/data7b.txt", true, Math.pow(10.0, 7.0));
         private final String name1;
         private final String name2;
         private List<String> linesA;
         private List<String> linesB;
         private boolean expectedResult;
+        private double size;
 
-        private Data(String name1, String name2, boolean expectedResult){
+        private Data(String name1, String name2, boolean expectedResult, double size) {
             this.name1 = name1;
             this.name2 = name2;
             this.expectedResult = expectedResult;
+            this.size = size;
         }
 
-        public void init() {
-            this.linesA = loadFile(new File(name1));
-            this.linesB = loadFile(new File(name2));
+        public void initDataFile() {
+            this.linesA = loadFile(new File(name1), size);
+            this.linesB = loadFile(new File(name2), size);
         }
 
-        public  List<String> getLinesA() {
+        public void initDataRandom() {
+            linesA = new ArrayList<String>();
+            linesB = new ArrayList<String>();
+            String characters = "ABCDEFGHIJKLMOPQRSTUVWZXabcdefghijklmnopqrstuvwzx ";
+            int length = RANDOM.nextInt(80 - 20) + 20;
+
+            for (int i = 0; i < size; i++) {
+                String firstString = generateString(characters, length);
+                linesA.add(firstString);
+
+                if (expectedResult) {
+                    linesB.add(firstString);
+                } else {
+                    linesB.add(generateString(characters, length));
+                }
+            }
+        }
+
+        public String generateString(String characters, int length) {
+            char[] text = new char[length];
+
+            for (int i = 0; i < length; i++) {
+                text[i] = characters.charAt(RANDOM.nextInt(characters.length()));
+            }
+
+            return new String(text);
+        }
+
+        public List<String> getLinesA() {
             return linesA;
         }
 
-        public  List<String> getLinesB() {
+        public List<String> getLinesB() {
             return linesB;
         }
 
