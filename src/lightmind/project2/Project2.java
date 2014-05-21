@@ -138,10 +138,9 @@ public class Project2 {
     }
 
     public static enum Data {
-        SET1(false, Math.pow(10.0, 1.0), Math.pow(10.0, 6.0)),
-        SET2(false, Math.pow(10.0, 2.0), Math.pow(10.0, 5.0)),
-        SET3(false, Math.pow(10.0, 3.0), Math.pow(10.0, 5.0)),
-        SET4(false, Math.pow(10.0, 4.0), Math.pow(10.0, 4.0)),
+        SET2(false, Math.pow(10.0, 2.0), Math.pow(10.0, 7.0)),
+        SET3(false, Math.pow(10.0, 3.0), Math.pow(10.0, 6.0)),
+        SET4(false, Math.pow(10.0, 4.0), Math.pow(10.0, 5.0)),
         SET5(false, Math.pow(10.0, 5.0), Math.pow(10.0, 4.0)),
         SET6(false, Math.pow(10.0, 6.0), Math.pow(10.0, 3.0));
         private List<String> linesA;
