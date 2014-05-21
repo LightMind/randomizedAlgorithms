@@ -9,11 +9,15 @@ import java.util.*;
 public class Project2 {
 
     public static final Random RANDOM = new SecureRandom();
-//    public static final long PRIME = powerLong(2, 31) - 1; // 2.147.483.647
-//    public static final long PRIME = powerLong(2, 28) - 57; // 268.435.399
-//    public static final long PRIME = powerLong(2, 24) - 3; // 16.777.213
-    public static final long PRIME = powerLong(2, 20) - 3; // 1.048.573
-//    public static final long PRIME = powerLong(2, 15) - 19; // 32.749
+//    public static final long PRIME = powerLong(2, 31) - 1;    // 2.147.483.647
+//    public static final long PRIME = powerLong(2, 24) - 167 ; // 16.777.049
+    public static final long PRIME = powerLong(2, 20) - 185 ; // 1.048.391
+//    public static final long PRIME = powerLong(2, 17) - 99;   // 130.973
+//    public static final long PRIME = powerLong(2, 14) - 111;  // 16.273
+//    public static final long PRIME = powerLong(2, 10) - 3;    // 1.021
+//    public static final long PRIME = 101
+//    public static final long PRIME = 11;
+
 
     /**
      * The total amount of data consumes just under 6 gb of memory so set compile flag -Xmx8192m
@@ -24,13 +28,13 @@ public class Project2 {
 //        Data data = Data.SET2; // 100 lines
 //        Data data = Data.SET3; // 1.000 lines
 //        Data data = Data.SET4; // 10.000 lines
-//        Data data = Data.SET5; // 100.000 lines
-        Data data = Data.SET6; // 1.000.000 lines
+        Data data = Data.SET5; // 100.000 lines
+//        Data data = Data.SET6; // 1.000.000 lines
 //        Data data = Data.SET7; // 10.000.000 lines
 
         System.out.println("start loading data");
-        data.initDataFile();
-//        data.initDataRandom();
+//        data.initDataFile();
+        data.initDataRandom();
         System.out.println("done loading data");
 
 //        benchmarkDeterministic(data);
