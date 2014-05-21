@@ -19,7 +19,7 @@ public class Project2 {
 //    public static final long PRIME = 11;
 
     /**
-     * The total amount of data consumes just under 6 gb of memory so set compile flag -Xmx8192m
+     * The largest set consumes just under 3.5 gb of memory so set compile flag -Xmx4048m
      */
     public static void main(String[] args) throws Exception {
 
@@ -28,16 +28,16 @@ public class Project2 {
 //        Data data = Data.SET3; // 1.000 lines
 //        Data data = Data.SET4; // 10.000 lines
 //        Data data = Data.SET5; // 100.000 lines
-//        Data data = Data.SET6; // 1.000.000 lines
-        Data data = Data.SET7; // 10.000.000 lines
+        Data data = Data.SET6; // 1.000.000 lines
+//        Data data = Data.SET7; // 10.000.000 lines
 
         System.out.println("start loading data");
-        data.initDataFile();
-//        data.initDataRandom();
+//        data.initDataFile();
+        data.initDataRandom();
         System.out.println("done loading data");
 
-        benchmarkDeterministic(data, 1);
-//        benchmarkRandomizedAlgorithm(data, 1000);
+//        benchmarkDeterministic(data, 1);
+        benchmarkRandomizedAlgorithm(data, 1000);
     }
 
     private static void benchmarkRandomizedAlgorithm(Data data, int maxIterations) throws Exception {
