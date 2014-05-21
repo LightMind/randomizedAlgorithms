@@ -17,7 +17,7 @@ public class Project2 {
 
     /**
      * The largest set consumes just under 500 mb of memory so set compile flag -Xmx1024m
-     * Run the code twice with the different primes above.
+     * Run the code twice with the different primes to see a change in the error probability.
      */
     public static void main(String[] args) throws Exception {
 
