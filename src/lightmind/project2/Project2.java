@@ -20,13 +20,15 @@ public class Project2 {
         long prime20 = powerLong(2, 20) - 185; // 1.048.391
         long prime21 = powerLong(2, 21) - 9; // 2.097.143
 
-        for (Data data : Data.values()) {
+        Data data = Data.SET6;
+
+        //for (Data data : Data.values()) {
             System.out.println("\n****** " + (int) data.getSize() + " lines with " + (int) data.getIterations() + " iterations ******");
 
             System.out.println("\nrandomized single pass");
             data.initData1Different();
-            benchmarkRandomizedAlgorithmSinglePass(data, prime20);
-            benchmarkRandomizedAlgorithmSinglePass(data, prime21);
+           benchmarkRandomizedAlgorithmSinglePass(data, prime20);
+         /*   benchmarkRandomizedAlgorithmSinglePass(data, prime21);
             data.initDataAllDifferent();
             benchmarkRandomizedAlgorithmSinglePass(data, prime20);
             benchmarkRandomizedAlgorithmSinglePass(data, prime21);
@@ -41,10 +43,11 @@ public class Project2 {
 
             System.out.println("\ndeterministic single pass");
             data.initData1Different();
+            */
             benchmarkDeterministic(data);
 
-            System.out.println("");
-        }
+            //System.out.println("");
+        //}
     }
 
     private static void benchmarkRandomizedAlgorithmSinglePass(Data data, long prime) throws Exception {
@@ -54,12 +57,13 @@ public class Project2 {
         for (int i = 0; i < data.getIterations(); i++) {
             double timeBefore = System.nanoTime();
             boolean result = randomizedMultisetEqualitySinglePass(data.getLinesA(), data.getLinesB(), prime);
-            double timeAfter = System.nanoTime();
-            totalTime += timeAfter - timeBefore;
+            totalTime += System.nanoTime() - timeBefore;
 
             if (result != data.getExpectedResult()) {
                 errorCounter++;
             }
+
+            System.out.println(format.format((totalTime / (i + 1)) * Math.pow(10.0, -6.0)));
         }
 
         int bitsInPrime = (int) (Math.log(prime) / Math.log(2)) + 1;
@@ -74,8 +78,7 @@ public class Project2 {
         for (int i = 0; i < data.getIterations(); i++) {
             double timeBefore = System.nanoTime();
             boolean result = randomizedMultisetEqualityDoublePass(data.getLinesA(), data.getLinesB(), prime);
-            double timeAfter = System.nanoTime();
-            totalTime += timeAfter - timeBefore;
+            totalTime += System.nanoTime() - timeBefore;
 
             if (result != data.getExpectedResult()) {
                 errorCounter++;
@@ -93,11 +96,11 @@ public class Project2 {
         for (int i = 0; i < data.getIterations(); i++) {
             Collections.shuffle(data.getLinesA());
             Collections.shuffle(data.getLinesB());
-
             long timeBefore = System.nanoTime();
             deterministicMultisetEquality(data.getLinesA(), data.getLinesB());
-            long timeAfter = System.nanoTime();
-            totalTime += timeAfter - timeBefore;
+            totalTime += System.nanoTime() - timeBefore;
+
+            System.out.println(format.format((totalTime / (i + 1)) * Math.pow(10.0, -6.0)));
         }
 
         String averageTime = format.format((totalTime / data.getIterations()) * Math.pow(10.0, -6.0));
@@ -225,10 +228,10 @@ public class Project2 {
     private enum Data {
         SET1(false, Math.pow(10.0, 1.0), Math.pow(10.0, 3.0)),
         SET2(false, Math.pow(10.0, 2.0), Math.pow(10.0, 3.0)),
-        SET3(false, Math.pow(10.0, 3.0), Math.pow(10.0, 3.0)),
+        SET3(false, Math.pow(10.0, 3.0), Math.pow(10.0, 6.0)),
         SET4(false, Math.pow(10.0, 4.0), Math.pow(10.0, 3.0)),
-        SET5(false, Math.pow(10.0, 5.0), Math.pow(10.0, 3.0)),
-        SET6(false, Math.pow(10.0, 6.0), Math.pow(10.0, 3.0));
+        SET5(false, Math.pow(10.0, 5.0), Math.pow(10.0, 1.0)),
+        SET6(false, Math.pow(10.0, 6.0), Math.pow(10.0, 1.0));
 
         private List<String> linesA;
         private List<String> linesB;
