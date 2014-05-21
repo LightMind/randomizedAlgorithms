@@ -11,6 +11,7 @@ public class Project2 {
 
     public static final DecimalFormat FORMAT = new DecimalFormat("#.###");
     public static final Random RANDOM = new SecureRandom();
+//    public static final long PRIME = powerLong(2, 31) - 1; // 2.147.483.647
     public static final long PRIME = powerLong(2, 20) - 185; // 1.048.391
     //public static final long PRIME = powerLong(2, 21) - 9; // 2.097.143
     public static final int SKIP = 100;

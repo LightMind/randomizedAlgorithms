@@ -1,0 +1,51 @@
+****** benchmarking with a 20 bit prime and skipping the first 100 iterations when calculating the average running time ******
+
+****** 100 lines with 10000000 iterations ******
+randomized - all lines in the two sets are different
+    10 errors, 0,036 ms, single polynomial
+    0 errors, 0,07 ms, double polynomial
+randomized - only one pair of lines in the two sets are different
+    958 errors, 0,037 ms, single polynomial
+    0 errors, 0,072 ms, double polynomial
+deterministic - only one pair of lines in the two sets are different
+    0,013 ms
+
+****** 1000 lines with 1000000 iterations ******
+randomized - all lines in the two sets are different
+    4 errors, 0,233 ms, single polynomial
+    0 errors, 0,451 ms, double polynomial
+randomized - only one pair of lines in the two sets are different
+    956 errors, 0,252 ms, single polynomial
+    2 errors, 0,5 ms, double polynomial
+deterministic - only one pair of lines in the two sets are different
+    0,24 ms
+
+****** 10000 lines with 100000 iterations ******
+randomized - all lines in the two sets are different
+    12 errors, 2,289 ms, single polynomial
+    0 errors, 4,594 ms, double polynomial
+randomized - only one pair of lines in the two sets are different
+    945 errors, 2,481 ms, single polynomial
+    20 errors, 4,963 ms, double polynomial
+deterministic - only one pair of lines in the two sets are different
+    4,017 ms
+
+****** 100000 lines with 10000 iterations ******
+randomized - all lines in the two sets are different
+    88 errors, 22,205 ms, single polynomial
+    1 errors, 43,597 ms, double polynomial
+randomized - only one pair of lines in the two sets are different
+    912 errors, 24,666 ms, single polynomial
+    73 errors, 45,729 ms, double polynomial
+deterministic - only one pair of lines in the two sets are different
+    88,103 ms
+
+****** 1000000 lines with 1000 iterations ******
+randomized - all lines in the two sets are different
+    390 errors, 252,796 ms, single polynomial
+    151 errors, 494,571 ms, double polynomial
+randomized - only one pair of lines in the two sets are different
+    618 errors, 253,184 ms, single polynomial
+    333 errors, 486,773 ms, double polynomial
+deterministic - only one pair of lines in the two sets are different
+    1492,079 ms
