@@ -1,0 +1,31 @@
+****** benchmarking with a 31 bit prime and skipping the first 100 iterations when calculating the average running time ******
+
+****** 100 lines with 10000000 iterations ******
+randomized - all lines in the two sets are different
+    0 errors, 0,035 ms, single polynomial
+randomized - only one pair of lines in the two sets are different
+    0 errors, 0,036 ms, single polynomial
+
+****** 1000 lines with 1000000 iterations ******
+randomized - all lines in the two sets are different
+    0 errors, 0,189 ms, single polynomial
+randomized - only one pair of lines in the two sets are different
+    0 errors, 0,215 ms, single polynomial
+
+****** 10000 lines with 100000 iterations ******
+randomized - all lines in the two sets are different
+    0 errors, 2,091 ms, single polynomial
+randomized - only one pair of lines in the two sets are different
+    0 errors, 1,881 ms, single polynomial
+
+****** 100000 lines with 10000 iterations ******
+randomized - all lines in the two sets are different
+    0 errors, 18,419 ms, single polynomial
+randomized - only one pair of lines in the two sets are different
+    0 errors, 22,063 ms, single polynomial
+
+****** 1000000 lines with 1000 iterations ******
+randomized - all lines in the two sets are different
+    0 errors, 225,163 ms, single polynomial
+randomized - only one pair of lines in the two sets are different
+    1 errors, 206,503 ms, single polynomial
