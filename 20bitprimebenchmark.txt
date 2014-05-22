@@ -49,3 +49,10 @@ randomized - only one pair of lines in the two sets are different
     333 errors, 486,773 ms, double polynomial
 deterministic - only one pair of lines in the two sets are different
     1492,079 ms
+	
+THIS SKIPPED THE FIRST 10 ITERATIONS WHEN CALCULATING THE AVERAGE RUNNING TIME
+****** 10000000 lines with 100 iterations ****** 
+randomized - only one pair of lines in the two sets are different
+    100 errors, 4841,764 ms, double polynomial
+deterministic - only one pair of lines in the two sets are different
+    23283,818 ms

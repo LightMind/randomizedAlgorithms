@@ -11,10 +11,12 @@ public class Project2 {
 
     public static final DecimalFormat FORMAT = new DecimalFormat("#.###");
     public static final Random RANDOM = new SecureRandom();
-//    public static final long PRIME = powerLong(2, 31) - 1; // 2.147.483.647
-    public static final long PRIME = powerLong(2, 25) - 39; // 33.554.393
+    //    public static final long PRIME = powerLong(2, 31) - 1; // 2.147.483.647
+//    public static final long PRIME = powerLong(2, 25) - 39; // 33.554.393
+//    public static final long PRIME = powerLong(2, 22) - 3; // 4.194.301
+    public static final long PRIME = powerLong(2, 21) - 9; // 2.097.143
 //    public static final long PRIME = powerLong(2, 20) - 3; // 1.048.573
-    //public static final long PRIME = powerLong(2, 21) - 9; // 2.097.143
+
     public static final int SKIP = 10;
 
     /**
@@ -36,15 +38,15 @@ public class Project2 {
             System.out.println("randomized - all lines in the two sets are different");
             data.initDataAllDifferent();
             randomizedBenchmark(data, singlePolynomialRandomizedBenchmarkStrategy);
-//            randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
+            randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
 
             System.out.println("randomized - only one pair of lines in the two sets are different");
             data.initData1Different();
             randomizedBenchmark(data, singlePolynomialRandomizedBenchmarkStrategy);
-//            randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
+            randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
 
-//            System.out.println("deterministic - only one pair of lines in the two sets are different");
-//            deterministicBenchmark(data);
+            System.out.println("deterministic - only one pair of lines in the two sets are different");
+            deterministicBenchmark(data);
         }
     }
 
@@ -144,8 +146,7 @@ public class Project2 {
         SET3(false, Math.pow(10.0, 3.0), Math.pow(10.0, 6.0)),
         SET4(false, Math.pow(10.0, 4.0), Math.pow(10.0, 5.0)),
         SET5(false, Math.pow(10.0, 5.0), Math.pow(10.0, 4.0)),
-        SET6(false, Math.pow(10.0, 6.0), Math.pow(10.0, 3.0)),
-        SET7(false, Math.pow(10.0, 7.0), Math.pow(10.0, 2.0));
+        SET6(false, Math.pow(10.0, 6.0), Math.pow(10.0, 3.0));
         private List<String> linesA;
         private List<String> linesB;
         private boolean expectedResult;
