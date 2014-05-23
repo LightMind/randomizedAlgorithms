@@ -5,7 +5,7 @@ randomized - all lines in the two sets are different
     5 errors, 0,037 ms, single polynomial
     0 errors, 0,071 ms, double polynomial
 randomized - only one pair of lines in the two sets are different
-    479 errors, 0,036 ms, single polynomial		4 TIMES THE POLYNOMIALS VERY EQUAL AND NON ZERO
+    479 errors, 0,036 ms, single polynomial		
     0 errors, 0,071 ms, double polynomial
 deterministic - only one pair of lines in the two sets are different
     0,014 ms
@@ -15,7 +15,7 @@ randomized - all lines in the two sets are different
     1 errors, 0,207 ms, single polynomial
     0 errors, 0,397 ms, double polynomial
 randomized - only one pair of lines in the two sets are different
-    491 errors, 0,202 ms, single polynomial		1 TIMES THE POLYNOMIALS VERY EQUAL AND NON ZERO
+    491 errors, 0,202 ms, single polynomial
     0 errors, 0,399 ms, double polynomial
 deterministic - only one pair of lines in the two sets are different
     0,241 ms
@@ -25,7 +25,7 @@ randomized - all lines in the two sets are different
     2 errors, 2,241 ms, single polynomial
     0 errors, 4,511 ms, double polynomial
 randomized - only one pair of lines in the two sets are different
-    492 errors, 2,195 ms, single polynomial		0 TIMES THE POLYNOMIALS VERY EQUAL AND NON ZERO
+    492 errors, 2,195 ms, single polynomial
     0 errors, 4,306 ms, double polynomial
 deterministic - only one pair of lines in the two sets are different
     4,004 ms
@@ -35,7 +35,7 @@ randomized - all lines in the two sets are different
     18 errors, 21,777 ms, single polynomial
     0 errors, 42,905 ms, double polynomial
 randomized - only one pair of lines in the two sets are different
-    483 errors, 23,479 ms, single polynomial	0 TIMES THE POLYNOMIALS VERY EQUAL AND NON ZERO
+    483 errors, 23,479 ms, single polynomial
     19 errors, 45,277 ms, double polynomial
 deterministic - only one pair of lines in the two sets are different
     83,991 ms
@@ -45,7 +45,7 @@ randomized - all lines in the two sets are different
     151 errors, 229,43 ms, single polynomial
     14 errors, 444,77 ms, double polynomial
 randomized - only one pair of lines in the two sets are different
-    379 errors, 218,279 ms, single polynomial	0 TIMES THE POLYNOMIALS VERY EQUAL AND NON ZERO
+    379 errors, 218,279 ms, single polynomial
     145 errors, 409,124 ms, double polynomial
 deterministic - only one pair of lines in the two sets are different
     1495,167 ms

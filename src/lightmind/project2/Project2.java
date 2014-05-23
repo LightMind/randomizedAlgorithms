@@ -12,11 +12,10 @@ public class Project2 {
     public static final DecimalFormat FORMAT = new DecimalFormat("#.###");
     public static final Random RANDOM = new SecureRandom();
     //    public static final long PRIME = powerLong(2, 31) - 1; // 2.147.483.647
-//    public static final long PRIME = powerLong(2, 25) - 39; // 33.554.393
-    public static final long PRIME = powerLong(2, 22) - 3; // 4.194.301
-//    public static final long PRIME = powerLong(2, 21) - 9; // 2.097.143
-//    public static final long PRIME = powerLong(2, 20) - 3; // 1.048.573
-
+    //    public static final long PRIME = powerLong(2, 25) - 39; // 33.554.393
+    //    public static final long PRIME = powerLong(2, 22) - 3; // 4.194.301
+    public static final long PRIME = powerLong(2, 21) - 9; // 2.097.143
+    //    public static final long PRIME = powerLong(2, 20) - 3; // 1.048.573
     public static final int SKIP = 10;
 
     /**
@@ -30,6 +29,7 @@ public class Project2 {
 
         RandomizedBenchmarkStrategy singlePolynomialRandomizedBenchmarkStrategy = new SinglePolynomialRandomizedBenchmarkStrategy();
         RandomizedBenchmarkStrategy doublePolynomialRandomizedBenchmarkStrategy = new DoublePolynomialRandomizedBenchmarkStrategy();
+        RandomizedBenchmarkStrategy hashFunctionErrorProbabilityBenchmarkStrategy = new HashFunctionErrorProbabilityBenchmarkStrategy();
 
         for (Data data : Data.values()) {
             System.out.println("");
@@ -38,15 +38,17 @@ public class Project2 {
             System.out.println("randomized - all lines in the two sets are different");
             data.initDataAllDifferent();
             randomizedBenchmark(data, singlePolynomialRandomizedBenchmarkStrategy);
-//            randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
+            randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
+//            randomizedBenchmark(data, hashFunctionErrorProbabilityBenchmarkStrategy);
 
             System.out.println("randomized - only one pair of lines in the two sets are different");
             data.initData1Different();
             randomizedBenchmark(data, singlePolynomialRandomizedBenchmarkStrategy);
-//            randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
+            randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
+//            randomizedBenchmark(data, hashFunctionErrorProbabilityBenchmarkStrategy);
 
-//            System.out.println("deterministic - only one pair of lines in the two sets are different");
-//            deterministicBenchmark(data);
+            System.out.println("deterministic - only one pair of lines in the two sets are different");
+            deterministicBenchmark(data);
         }
     }
 
@@ -309,6 +311,45 @@ public class Project2 {
 
             long[] results = {result1, result2};
             return results;
+        }
+    }
+
+    public static class HashFunctionErrorProbabilityBenchmarkStrategy implements RandomizedBenchmarkStrategy {
+
+        @Override
+        public boolean randomizedMultisetEquality(List<String> linesA, List<String> linesB) {
+            List<Long> as = generateHashFunction(80);
+
+            long polynomial1 = fingerprint(linesA, as);
+            long polynomial2 = fingerprint(linesB, as);
+
+            return polynomial1 == polynomial2;
+        }
+
+        @Override
+        public String getPolynomialType() {
+            return "single polynomial";
+        }
+
+        public long fingerprint(List<String> lines, List<Long> as) {
+            long result = 0;
+
+            while (result == 0) {
+                result = 1;
+                long zValue = Math.abs(RANDOM.nextLong()) % PRIME;
+                for (String line : lines) {
+                    long hashValue = hash(line, as);
+                    long value = zValue - hashValue;
+
+                    while (value < 0) {
+                        value = PRIME + value;
+                    }
+
+                    result = (result * value) % PRIME;
+                }
+            }
+
+            return result;
         }
     }
 }
