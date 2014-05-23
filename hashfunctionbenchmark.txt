@@ -1,13 +1,21 @@
 ****** benchmarking with a 21 bit prime and skipping the first 10 iterations when calculating the average running time ******
 
 ****** 100 lines with 10000000 iterations ******
-randomized - all lines in the two sets are different
-    2 errors, 0,036 ms, single polynomial
-randomized - only one pair of lines in the two sets are different
-    4 errors, 0,034 ms, single polynomial
+hash function - only one pair of lines in the two sets are different
+    3 errors
 
-****** 1000 lines with 10000000 iterations ******
-randomized - all lines in the two sets are different
-    4 errors, 0,245 ms, single polynomial
-randomized - only one pair of lines in the two sets are different
-    4 errors, 0,2 ms, single polynomial
+****** 1000 lines with 1000000 iterations ******
+hash function - only one pair of lines in the two sets are different
+    2 errors
+
+****** 10000 lines with 100000 iterations ******
+hash function - only one pair of lines in the two sets are different
+    0 errors
+
+****** 100000 lines with 10000 iterations ******
+hash function - only one pair of lines in the two sets are different
+    0 errors
+
+****** 1000000 lines with 1000 iterations ******
+hash function - only one pair of lines in the two sets are different
+    0 errors

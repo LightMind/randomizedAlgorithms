@@ -29,7 +29,6 @@ public class Project2 {
 
         RandomizedBenchmarkStrategy singlePolynomialRandomizedBenchmarkStrategy = new SinglePolynomialRandomizedBenchmarkStrategy();
         RandomizedBenchmarkStrategy doublePolynomialRandomizedBenchmarkStrategy = new DoublePolynomialRandomizedBenchmarkStrategy();
-        RandomizedBenchmarkStrategy hashFunctionErrorProbabilityBenchmarkStrategy = new HashFunctionErrorProbabilityBenchmarkStrategy();
 
         for (Data data : Data.values()) {
             System.out.println("");
@@ -39,16 +38,20 @@ public class Project2 {
             data.initDataAllDifferent();
             randomizedBenchmark(data, singlePolynomialRandomizedBenchmarkStrategy);
             randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
-//            randomizedBenchmark(data, hashFunctionErrorProbabilityBenchmarkStrategy);
+
+            System.out.println("hash function - all lines in the two sets are different");
+            hashFunctionBenchmark(data);
 
             System.out.println("randomized - only one pair of lines in the two sets are different");
             data.initData1Different();
             randomizedBenchmark(data, singlePolynomialRandomizedBenchmarkStrategy);
             randomizedBenchmark(data, doublePolynomialRandomizedBenchmarkStrategy);
-//            randomizedBenchmark(data, hashFunctionErrorProbabilityBenchmarkStrategy);
 
             System.out.println("deterministic - only one pair of lines in the two sets are different");
             deterministicBenchmark(data);
+
+            System.out.println("hash function - only one pair of lines in the two sets are different");
+            hashFunctionBenchmark(data);
         }
     }
 
@@ -92,6 +95,49 @@ public class Project2 {
         System.out.println("    " + averageTime + " ms");
     }
 
+    private static void hashFunctionBenchmark(Data data) {
+        int errorCounter = 0;
+
+        for (int i = 0; i < data.getIterations(); i++) {
+            boolean result = hashFunctionEquality(data.getLinesA(), data.getLinesB());
+
+            if (result != data.getExpectedResult()) {
+                errorCounter++;
+            }
+        }
+
+        System.out.println("    " + errorCounter + " errors");
+    }
+
+    public static boolean hashFunctionEquality(List<String> linesA, List<String> linesB) {
+        List<Long> as = generateHashFunction(80);
+
+        List<Long> polynomial1 = fingerprint(linesA, as);
+        List<Long> polynomial2 = fingerprint(linesB, as);
+
+        Collections.sort(polynomial1);
+        Collections.sort(polynomial2);
+
+        for (int j = 0; j < polynomial1.size(); j++) {
+            if (!polynomial1.get(j).equals(polynomial2.get(j))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static List<Long> fingerprint(List<String> lines, List<Long> as) {
+        List<Long> result = new ArrayList<Long>();
+
+        for (String line : lines) {
+            long hashValue = hash(line, as);
+            result.add(hashValue);
+        }
+
+        return result;
+    }
+
     public static boolean deterministicMultisetEquality(List<String> linesA, List<String> linesB) {
         Collections.sort(linesA);
         Collections.sort(linesB);
@@ -118,10 +164,6 @@ public class Project2 {
     public static long hash(String x, List<Long> as) {
         char[] chars = x.toCharArray();
         long result = 0;
-
-        if (x.length() > 80) {
-            System.out.println(x.length());
-        }
 
         for (int i = 0; i < x.length(); i++) {
             Long aLong = as.get(i);
@@ -311,45 +353,6 @@ public class Project2 {
 
             long[] results = {result1, result2};
             return results;
-        }
-    }
-
-    public static class HashFunctionErrorProbabilityBenchmarkStrategy implements RandomizedBenchmarkStrategy {
-
-        @Override
-        public boolean randomizedMultisetEquality(List<String> linesA, List<String> linesB) {
-            List<Long> as = generateHashFunction(80);
-
-            long polynomial1 = fingerprint(linesA, as);
-            long polynomial2 = fingerprint(linesB, as);
-
-            return polynomial1 == polynomial2;
-        }
-
-        @Override
-        public String getPolynomialType() {
-            return "single polynomial";
-        }
-
-        public long fingerprint(List<String> lines, List<Long> as) {
-            long result = 0;
-
-            while (result == 0) {
-                result = 1;
-                long zValue = Math.abs(RANDOM.nextLong()) % PRIME;
-                for (String line : lines) {
-                    long hashValue = hash(line, as);
-                    long value = zValue - hashValue;
-
-                    while (value < 0) {
-                        value = PRIME + value;
-                    }
-
-                    result = (result * value) % PRIME;
-                }
-            }
-
-            return result;
         }
     }
 }
