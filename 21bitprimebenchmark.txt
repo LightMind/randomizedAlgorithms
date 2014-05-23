@@ -2,7 +2,7 @@
 
 ****** 100 lines with 10000000 iterations ******
 randomized - all lines in the two sets are different
-    6 errors, 0,037 ms, single polynomial
+    5 errors, 0,037 ms, single polynomial
     0 errors, 0,071 ms, double polynomial
 randomized - only one pair of lines in the two sets are different
     479 errors, 0,036 ms, single polynomial		4 TIMES THE POLYNOMIALS VERY EQUAL AND NON ZERO
